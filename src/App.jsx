@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ProductList from './ProductList';
 import './App.css';
 import AboutUs from './AboutUs';
+import CartItem from './CartItem';
 
 function App() {
   
@@ -35,6 +36,7 @@ function App() {
       <div className={`product-list-container ${showProductList ? 'visible' : ''}`}>
         <ProductList />
       </div>
+      <CartItem />
     </div>
   );
 }

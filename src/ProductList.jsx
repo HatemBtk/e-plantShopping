@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 function ProductList() {
     const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-    const [addedToCart, setAddedToCart] = useState({});
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -250,6 +249,7 @@ const handlePlantsClick = (e) => {
     setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
     setShowCart(false);
   };
+
   const handleAddToCart = (product) => {
     dispatch(addItem(product));
     setAddedToCart((prevState) => ({
@@ -258,6 +258,8 @@ const handlePlantsClick = (e) => {
        [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
      }));
   };
+  const [addedToCart, setAddedToCart] = useState({});
+
     return (
         <div>
              <div className="navbar" style={styleObj}>
