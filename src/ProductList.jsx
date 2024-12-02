@@ -1,12 +1,29 @@
 import React, { useState,useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import addItem from './CartSlice';
-import CartSlice from './CartSlice';
-import { useDispatch } from 'react-redux';
-function ProductList() {
-    const [showCart, setShowCart] = useState(false); 
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from './CartSlice';
+function ProductList(props) {
+       const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [cart, setCart] = useState([]); // State to store the items added to the cart
+    const dispatch = useDispatch();
+    const cartItems=useSelector(state => state.cart.items);
+    console.log(cartItems);
+    // setCart(cartItems);
+    useEffect(() => {
+        
+    }, []);
+    const alreadyInCart = (itemName) => {
+        return cartItems.some((item) => item.name === itemName);
+    }
+    const handleAddToCart = (item) => {
+        console.log("clicked");
+        dispatch(addItem(item));
+    }
+    const totalItems = () => {
+        return cartItems.reduce((total, item) => total + item.quantity, 0);
+    }
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -234,7 +251,7 @@ function ProductList() {
     fontSize: '30px',
     textDecoration: 'none',
    }
-   const handleCartClick = (e) => {
+    const handleCartClick = (e) => {
     e.preventDefault();
     setShowCart(true); // Set showCart to true when cart icon is clicked
 };
@@ -245,20 +262,10 @@ const handlePlantsClick = (e) => {
 };
 
    const handleContinueShopping = (e) => {
+    console.log("clicked");
     e.preventDefault();
-    setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
     setShowCart(false);
   };
-
-  const handleAddToCart = (product) => {
-    dispatch(addItem(product));
-    setAddedToCart((prevState) => ({
-
-       ...prevState,
-       [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-     }));
-  };
-  const [addedToCart, setAddedToCart] = useState({});
 
     return (
         <div>
@@ -293,8 +300,7 @@ const handlePlantsClick = (e) => {
                 <div className="product-description">{plant.description}</div>
                 <div className="product-cost">{plant.cost}</div>
                 {/*Similarly like the above plant.name show other details like description and cost*/}
-                <button  className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
-
+<button style={{backgroundColor:alreadyInCart(plant.name)?"gray":"rgb(76, 175, 80)"}} disabled={alreadyInCart(plant.name)? true:false} onClick={()=>handleAddToCart({name:plant.name,cost:plant.cost,image:plant.image})} className='product-button'>Add to Cart</button>
             </div>
             ))}
         </div>
